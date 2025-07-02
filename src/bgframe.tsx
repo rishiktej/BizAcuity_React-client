@@ -28,6 +28,7 @@ const Bgframe: React.FC = () => {
   const MAX_IMAGES = 10;
   const location = useLocation();
   const loadSaved = location.state?.loadSaved ?? false;
+  const templateId = location.state?.templateId ?? null;
 
   const convertToPixels = (value: number, unit: string): number => {
     if (unit === "cm") return value * 0.6;
@@ -117,20 +118,21 @@ const Bgframe: React.FC = () => {
     setC((prev) => prev - 1);
   };
 
-  const STORAGE_KEY = "saved_template";
+  const STORAGE_KEY = "saved_templates";
 
-  const saveToLocalStorage = (data: any) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  };
+  const saveToLocalStorage = (newTemplate: any) => {
+    const existing = localStorage.getItem(STORAGE_KEY);
+    const templates = existing ? JSON.parse(existing) : [];
 
-  const loadFromLocalStorage = (): any | null => {
-    const data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : null;
+    const updatedTemplates = [...templates, { id: Date.now(), ...newTemplate }];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedTemplates));
   };
 
   useEffect(() => {
-    if (loadSaved) {
-      const saved = loadFromLocalStorage();
+    if (loadSaved && templateId) {
+      const savedList = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      console.log("s", savedList);
+      const saved = savedList.find((t: any) => t.id === templateId);
       if (saved) {
         setUnit(saved.unit);
         setC(saved.c);
@@ -141,10 +143,10 @@ const Bgframe: React.FC = () => {
         setBgImg(saved.bgImg);
       }
     }
-  }, [loadSaved]);
+  }, [loadSaved, templateId]);
 
   const handleSaveTemplate = () => {
-    const dataToSave = {
+    const template = {
       unit,
       c,
       widthInput,
@@ -153,7 +155,7 @@ const Bgframe: React.FC = () => {
       bgImg,
       images,
     };
-    saveToLocalStorage(dataToSave);
+    saveToLocalStorage(template);
     alert("Template saved!");
   };
 

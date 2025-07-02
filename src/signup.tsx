@@ -12,8 +12,11 @@ export default function SignUpForm() {
     <Formik
       initialValues={{ name: "", email: "", password: "" }}
       validationSchema={validationSchema}
-      onSubmit={(values) => {
-        console.log("Sign Up:", values);
+      onSubmit={(values, { resetForm }) => {
+        // Save to localStorage
+        localStorage.setItem("userCreds", JSON.stringify(values));
+        alert("Sign up successful!");
+        resetForm();
       }}
     >
       <Form className="space-y-4">

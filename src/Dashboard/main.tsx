@@ -15,7 +15,7 @@ export default function Dashboard() {
   const [templates, setTemplates] = useState<TemplateData[]>([]);
 
   useEffect(() => {
-    const stored = localStorage.getItem("saved_template");
+    const stored = localStorage.getItem("saved_templates");
     if (stored) {
       const parsed = JSON.parse(stored);
       const withDate = {

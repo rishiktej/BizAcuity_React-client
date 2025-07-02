@@ -1,10 +1,15 @@
+import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { useState } from "react";
 
 export default function SignInForm() {
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
-    password: Yup.string().min(6, "Too short").required("Required"),
+    password: Yup.string().required("Required"),
   });
 
   return (
@@ -12,10 +17,27 @@ export default function SignInForm() {
       initialValues={{ email: "", password: "" }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        console.log("Sign In:", values);
+        const stored = localStorage.getItem("userCreds");
+
+        if (stored) {
+          const user = JSON.parse(stored);
+          if (
+            user.email === values.email &&
+            user.password === values.password
+          ) {
+            setError("");
+            navigate("/dashboard");
+          } else {
+            setError("Invalid email or password.");
+          }
+        } else {
+          setError("No account found. Please sign up first.");
+        }
       }}
     >
       <Form className="space-y-4">
+        {error && <div className="text-red-600 text-sm">{error}</div>}
+
         <div>
           <label className="block text-sm font-medium mb-1">Email</label>
           <Field
