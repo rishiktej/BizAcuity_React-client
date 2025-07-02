@@ -88,7 +88,7 @@ const DraggableResizableImage: React.FC<DraggableResizableImageProps> = ({
     }
   };
 
-  const handleResize: ResizeCallback = (e, direction, ref, delta) => {
+  const handleResize: ResizeCallback = (_e, _direction, ref) => {
     const newWidth = Math.min(ref.offsetWidth, frameWidth - pos.x);
     const newHeight = Math.min(ref.offsetHeight, frameHeight - pos.y);
 
