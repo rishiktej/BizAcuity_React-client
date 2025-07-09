@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { useState } from "react";
 
 export default function SignInForm() {
-  const [error, setError] = useState("");
+  const [error, _setError] = useState("");
   const navigate = useNavigate();
 
   const validationSchema = Yup.object().shape({
@@ -16,22 +16,32 @@ export default function SignInForm() {
     <Formik
       initialValues={{ email: "", password: "" }}
       validationSchema={validationSchema}
-      onSubmit={(values) => {
-        const stored = localStorage.getItem("userCreds");
+      onSubmit={async (values, { resetForm, setSubmitting }) => {
+        try {
+          const response = await fetch("http://localhost:8080/signin", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: values.email,
+              password: values.password,
+            }),
+          });
 
-        if (stored) {
-          const user = JSON.parse(stored);
-          if (
-            user.email === values.email &&
-            user.password === values.password
-          ) {
-            setError("");
-            navigate("/dashboard");
-          } else {
-            setError("Invalid email or password.");
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.message || "Signin failed");
           }
-        } else {
-          setError("No account found. Please sign up first.");
+          localStorage.setItem("token", data.token);
+          alert("Signin successful!");
+          navigate("/dashboard");
+          resetForm();
+        } catch (error: any) {
+          alert(`Error: ${error.message}`);
+        } finally {
+          setSubmitting(false);
         }
       }}
     >

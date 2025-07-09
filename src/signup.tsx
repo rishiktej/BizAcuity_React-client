@@ -1,22 +1,47 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 export default function SignUpForm() {
   const validationSchema = Yup.object().shape({
-    name: Yup.string().min(2, "Too short").required("Required"),
+    username: Yup.string().min(2, "Too short").required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string().min(6, "Too short").required("Required"),
   });
+  const navigate = useNavigate();
 
   return (
     <Formik
-      initialValues={{ name: "", email: "", password: "" }}
+      initialValues={{ username: "", email: "", password: "" }}
       validationSchema={validationSchema}
-      onSubmit={(values, { resetForm }) => {
-        // Save to localStorage
-        localStorage.setItem("userCreds", JSON.stringify(values));
-        alert("Sign up successful!");
-        resetForm();
+      onSubmit={async (values, { resetForm, setSubmitting }) => {
+        try {
+          const response = await fetch("http://localhost:8080/signup", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: values.username,
+              email: values.email,
+              password: values.password,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.message || "Signup failed");
+          }
+
+          alert("Signup successful!");
+          resetForm();
+          navigate("/dashboard");
+        } catch (error: any) {
+          alert(`Error: ${error.message}`);
+        } finally {
+          setSubmitting(false);
+        }
       }}
     >
       <Form className="space-y-4">
@@ -24,7 +49,7 @@ export default function SignUpForm() {
           <label className="block text-sm font-medium mb-1">Name</label>
           <Field
             type="text"
-            name="name"
+            name="username"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
           />
           <div className="text-red-500 text-sm mt-1">

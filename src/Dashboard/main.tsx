@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 interface TemplateData {
+  _id: string;
   widthInput: number;
   heightInput: number;
   unit: string;
@@ -15,21 +17,49 @@ export default function Dashboard() {
   const [templates, setTemplates] = useState<TemplateData[]>([]);
 
   useEffect(() => {
-    const stored = localStorage.getItem("saved_templates");
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      const withDate = {
-        ...parsed,
-        lastEdited: new Date().toISOString().split("T")[0],
-      };
-      setTemplates([withDate]); // currently supports only 1 template
-    }
+    const fetchTemplates = async () => {
+      const token = localStorage.getItem("token");
+
+      const res = await fetch("http://localhost:8080/templates", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = await res.json();
+      setTemplates(data || []);
+    };
+
+    fetchTemplates();
   }, []);
 
+  const deleteTemplate = async (id: string) => {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`http://localhost:8080/templates/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.ok) {
+      setTemplates((prev) => prev.filter((template) => template._id !== id));
+    } else {
+      alert("Failed to delete template");
+    }
+  };
+
+  const loadTemplate = (template: TemplateData) => {
+    navigate("/create", {
+      state: {
+        loadSaved: true,
+        template,
+      },
+    });
+  };
+
   const handleSignOut = () => {
-    // Clear user session/token if needed
-    console.log("Signed out");
-    navigate("/"); // Redirect to login or home
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   return (
@@ -64,39 +94,35 @@ export default function Dashboard() {
             + Create New
           </button>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {templates.length === 0 ? (
-            <p className="text-gray-500">No templates found.</p>
-          ) : (
-            templates.map((template, index) => (
-              <div
-                key={index}
-                className="bg-white p-4 rounded shadow hover:shadow-lg transition cursor-pointer"
-                onClick={() =>
-                  navigate("/create", { state: { loadSaved: true } })
-                } // or /editor/:id if you support multiple
-              >
-                <h3 className="text-lg font-medium mb-2">
-                  Template {index + 1}
-                </h3>
-                <p className="text-sm text-gray-600">
-                  {template.widthInput} x {template.heightInput} {template.unit}
-                </p>
-                <div
-                  className="mt-2 w-full h-24 rounded border border-gray-200 bg-center bg-cover"
-                  style={{
-                    backgroundColor: template.bgColor,
-                    backgroundImage: template.bgImg
-                      ? `url(${template.bgImg})`
-                      : "none",
-                  }}
-                ></div>
-                <p className="text-xs text-gray-500 mt-2">
-                  Last edited: {template.lastEdited}
-                </p>
-              </div>
-            ))
+        <hr className="my-4" />
+        <h3 className="text-md font-semibold text-gray-700 mb-2">
+          Saved Templates
+        </h3>
+        <div className="space-y-2">
+          {templates.length === 0 && (
+            <p className="text-sm text-gray-500">No templates found.</p>
           )}
+          {templates.map((template, index) => (
+            <div
+              key={template._id}
+              className="border p-2 rounded bg-gray-50 hover:bg-gray-100"
+            >
+              <div className="text-xs text-gray-600">Template #{index + 1}</div>
+              <button
+                onClick={() => loadTemplate(template)}
+                className="mt-1 w-full bg-purple-500 text-white py-1 rounded text-sm hover:bg-purple-600"
+              >
+                Load
+              </button>
+              <button
+                onClick={() => deleteTemplate(template._id)}
+                className="text-red-500 hover:text-red-700 transition"
+                title="Delete Template"
+              >
+                <FaTrash />
+              </button>
+            </div>
+          ))}
         </div>
       </main>
     </div>
