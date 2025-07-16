@@ -10,23 +10,21 @@ const defaultStickers = [
   "https://cdn-icons-png.flaticon.com/256/7600/7600410.png",
 ];
 
-const defaultFrames = [
-  "https://cdn-icons-png.flaticon.com/512/616/616431.png",
-  "https://cdn-icons-png.flaticon.com/512/616/616432.png",
-];
+const defaultFrames = ["/f1.png", "/f2.png", "/t1.png"];
 
 interface NavbarProps {
   onStickerSelect: (src: string) => void;
+  onFrameSelect: (src: string) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onStickerSelect }) => {
+const Navbar: React.FC<NavbarProps> = ({ onStickerSelect, onFrameSelect }) => {
   const [isStickerOpen, setStickerOpen] = useState(false);
   const [isFrameOpen, setFrameOpen] = useState(false);
 
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 h-14 bg-white shadow flex items-center justify-between px-4 z-50">
-        <h1 className="text-xl font-bold">MiAlter(copy)</h1>
+        <h1 className="text-xl font-bold">MiAlter</h1>
         <div className="space-x-4">
           <button
             onClick={() => setStickerOpen(true)}
@@ -95,6 +93,10 @@ const Navbar: React.FC<NavbarProps> = ({ onStickerSelect }) => {
                   src={src}
                   alt="frame"
                   className="h-20 w-20 object-contain cursor-pointer border hover:scale-105 transition"
+                  onClick={() => {
+                    onFrameSelect(src);
+                    setFrameOpen(false);
+                  }}
                 />
               ))}
             </div>

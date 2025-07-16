@@ -1,6 +1,6 @@
 import { useState } from "react";
-import SignInForm from "./signin";
-import SignUpForm from "./signup";
+import SignInForm from "./Authentication/signin";
+import SignUpForm from "./Authentication/signup";
 
 export default function HomePage() {
   const [isSignIn, setIsSignIn] = useState(true);

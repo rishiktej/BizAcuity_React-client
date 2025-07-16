@@ -78,6 +78,15 @@ export default function SignInForm() {
         >
           Sign In
         </button>
+        <div className="text-right mt-2">
+          <button
+            type="button"
+            className="text-sm text-purple-600 hover:underline"
+            onClick={() => navigate("/forgotpassword")}
+          >
+            Forgot Password?
+          </button>
+        </div>
       </Form>
     </Formik>
   );

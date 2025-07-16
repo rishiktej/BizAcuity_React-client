@@ -24,8 +24,8 @@ export default function Dashboard() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const data = await res.json();
-      setTemplates(data || []);
+      const { data } = await res.json();
+      setTemplates(Array.isArray(data) ? data : []);
     };
 
     fetchTemplates();
@@ -69,7 +69,7 @@ export default function Dashboard() {
         <div>
           <h2 className="text-2xl font-bold mb-8 text-purple-600">Dashboard</h2>
           <button
-            onClick={() => alert("Profile Clicked")}
+            onClick={() => navigate("/profile")}
             className="w-full text-left py-2 px-3 rounded hover:bg-purple-100 text-gray-700"
           >
             Profile

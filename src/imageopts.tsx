@@ -186,7 +186,7 @@ const DraggableResizableImage: React.FC<DraggableResizableImageProps> = ({
       {isSelected && (
         <div
           ref={popupRef}
-          className="absolute -bottom-28 left-0 bg-white/70 backdrop-blur p-3 shadow-md text-xs z-80 border border-gray-300 rounded"
+          className="absolute -bottom-28 left-20 bg-white/70 backdrop-blur p-3 shadow-md text-xs z-80 border border-gray-300 rounded"
         >
           <div className="mb-2">
             <label className="mr-2">Shape:</label>

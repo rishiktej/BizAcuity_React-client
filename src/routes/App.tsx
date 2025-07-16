@@ -4,6 +4,8 @@ import Bgframe from "../bgframe";
 import HomePage from "../Home";
 import Dashboard from "../Dashboard/main";
 import ProtectedRoute from "./protectedroute";
+import Profile from "../Dashboard/profile";
+import ForgotPass from "../Authentication/forgotpass";
 
 const App: React.FC = () => {
   return (
@@ -27,6 +29,15 @@ const App: React.FC = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/forgotpassword" element={<ForgotPass />} />
         </Routes>
       </div>
     </Router>

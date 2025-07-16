@@ -27,8 +27,9 @@ const Bgframe: React.FC = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null
   );
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const frameRef = useRef<HTMLDivElement>(null);
-  const MAX_IMAGES = 10;
+  const MAX_IMAGES = 15;
   const location = useLocation();
   const loadSaved = location.state?.loadSaved ?? false;
   const template = location.state?.template ?? null;
@@ -95,7 +96,15 @@ const Bgframe: React.FC = () => {
 
     const toBase64FromURL = async (url: string): Promise<string> => {
       try {
-        const response = await fetch(url);
+        const proxyUrl = `http://localhost:8080/proxy-image?url=${encodeURIComponent(
+          url
+        )}`;
+        const response = await fetch(proxyUrl);
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch ${url}`);
+        }
+
         const blob = await response.blob();
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -239,137 +248,205 @@ const Bgframe: React.FC = () => {
     });
   };
 
+  const handleFrameSelect = (src: string) => {
+    const newSticker: ImageData = {
+      src,
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 100,
+      rotate: 0,
+    };
+    setImages((prev) => {
+      const combined = [...prev, newSticker];
+      setC((prev) => prev + 1);
+      return combined.slice(0, MAX_IMAGES);
+    });
+  };
+
   return (
     <>
-      <Navbar onStickerSelect={handleStickerSelect} />
+      <Navbar
+        onStickerSelect={handleStickerSelect}
+        onFrameSelect={handleFrameSelect}
+      />
       <div
         className="min-h-screen bg-gray-100 pt-20 flex"
         onClick={() => setSelectedImageIndex(null)}
       >
-        <aside
-          className="w-72 pt-20 fixed top-0 left-0 z-40 h-screen bg-white border-r border-gray-200 p-4 shadow-md overflow-y-auto"
-          aria-label="Sidebar"
-        >
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-gray-700">
-              Set Dimensions
-            </h2>
-          </div>
-          <div className="space-y-4">
-            {/* width */}
-            <div>
-              <label className="block text-sm text-gray-600 mb-1">Width</label>
-              <input
-                type="number"
-                value={widthInput}
-                onChange={(e) => setWidthInput(+e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2"
-                placeholder="Width"
+        {!isSidebarOpen && (
+          <button
+            className="fixed top-24 left-4 z-50 bg-white border rounded-full shadow p-2 hover:bg-gray-200"
+            onClick={() => setIsSidebarOpen(true)}
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 6h16M4 12h16M4 18h7"
               />
-            </div>
-            {/* height */}
-            <div>
-              <label className="block text-sm text-gray-600 mb-1">Height</label>
-              <input
-                type="number"
-                value={heightInput}
-                onChange={(e) => setHeightInput(+e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-2"
-                placeholder="Height"
-              />
-            </div>
-            {/* unit */}
-            <div>
-              <label className="block text-sm text-gray-600 mb-1">Unit</label>
-              <select
-                value={unit}
-                onChange={(e) => setUnit(e.target.value as "cm" | "m" | "ft")}
-                className="w-full border border-gray-300 rounded px-3 py-2"
+            </svg>
+          </button>
+        )}
+
+        {isSidebarOpen && (
+          <aside
+            className="w-72 pt-15 pb-20 fixed top-12 left-0 z-40 h-screen bg-white border-r border-gray-200 p-4 shadow-md overflow-y-auto"
+            aria-label="Sidebar"
+          >
+            <button
+              className="absolute top-12 right-4 bg-white border rounded-full shadow p-2 hover:bg-gray-200"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
               >
-                <option value="cm">cm</option>
-                <option value="m">m</option>
-                <option value="ft">ft</option>
-              </select>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold text-gray-700">
+                Set Dimensions
+              </h2>
             </div>
-            {/* background color */}
-            <div>
-              <label className="block text-sm text-gray-600 mb-1">
-                Background Color
-              </label>
-              <input
-                type="color"
-                value={bgColor}
-                onChange={(e) => setBgColor(e.target.value)}
-                className="w-full h-10 border border-gray-300 rounded"
-              />
+            <div className="space-y-4">
+              {/* width */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">
+                  Width
+                </label>
+                <input
+                  type="number"
+                  value={widthInput}
+                  onChange={(e) => setWidthInput(+e.target.value)}
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  placeholder="Width"
+                />
+              </div>
+              {/* height */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">
+                  Height
+                </label>
+                <input
+                  type="number"
+                  value={heightInput}
+                  onChange={(e) => setHeightInput(+e.target.value)}
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  placeholder="Height"
+                />
+              </div>
+              {/* unit */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">Unit</label>
+                <select
+                  value={unit}
+                  onChange={(e) => setUnit(e.target.value as "cm" | "m" | "ft")}
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                >
+                  <option value="cm">cm</option>
+                  <option value="m">m</option>
+                  <option value="ft">ft</option>
+                </select>
+              </div>
+              {/* background color */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">
+                  Background Color
+                </label>
+                <input
+                  type="color"
+                  value={bgColor}
+                  onChange={(e) => setBgColor(e.target.value)}
+                  className="w-full h-10 border border-gray-300 rounded"
+                />
+              </div>
+              {/* background image */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">
+                  Background Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBgImage}
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+              {/* upload images */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">
+                  Upload Images
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileChange}
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+              {/* image URLs */}
+              <div>
+                <label className="block text-sm text-gray-600 mb-1">
+                  Image URLs (comma or newline separated)
+                </label>
+                <textarea
+                  value={imageURLs}
+                  onChange={handleURLInput}
+                  rows={3}
+                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  placeholder="https://example.com/image1.jpg, https://example.com/image2.png"
+                ></textarea>
+                <button
+                  onClick={handleURLUpload}
+                  className="mt-2 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+                >
+                  Upload URLs
+                </button>
+              </div>
+              <p className="text-sm text-gray-500">
+                Max {MAX_IMAGES} images allowed.
+              </p>
+              <p className="text-sm text-gray-500">Images uploaded: {c}</p>
             </div>
-            {/* background image */}
+            <button
+              onClick={handleSaveTemplate}
+              className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+            >
+              Save Template
+            </button>
             <div>
-              <label className="block text-sm text-gray-600 mb-1">
-                Background Image
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleBgImage}
-                className="w-full border border-gray-300 rounded px-3 py-2"
-              />
-            </div>
-            {/* upload images */}
-            <div>
-              <label className="block text-sm text-gray-600 mb-1">
-                Upload Images
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleFileChange}
-                className="w-full border border-gray-300 rounded px-3 py-2"
-              />
-            </div>
-            {/* image URLs */}
-            <div>
-              <label className="block text-sm text-gray-600 mb-1">
-                Image URLs (comma or newline separated)
-              </label>
-              <textarea
-                value={imageURLs}
-                onChange={handleURLInput}
-                rows={3}
-                className="w-full border border-gray-300 rounded px-3 py-2"
-                placeholder="https://example.com/image1.jpg, https://example.com/image2.png"
-              ></textarea>
               <button
-                onClick={handleURLUpload}
-                className="mt-2 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+                onClick={handleDownload}
+                className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
               >
-                Upload URLs
+                Download as PNG
               </button>
             </div>
-            <p className="text-sm text-gray-500">
-              Max {MAX_IMAGES} images allowed.
-            </p>
-            <p className="text-sm text-gray-500">Images uploaded: {c}</p>
-          </div>
-          <button
-            onClick={handleSaveTemplate}
-            className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
-          >
-            Save Template
-          </button>
-          <div>
-            <button
-              onClick={handleDownload}
-              className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
-            >
-              Download as PNG
-            </button>
-          </div>
-        </aside>
+          </aside>
+        )}
 
         {/* Canvas */}
-        <main className="flex-1 p-6 overflow-auto">
+        <main
+          className={`flex-1 p-6 overflow-auto transition-all duration-300 ${
+            isSidebarOpen ? "ml-72" : "ml-16"
+          }`}
+        >
           <div
             ref={frameRef}
             className="border-2 border-dashed border-gray-400 mx-auto relative rounded-lg shadow-md"
