@@ -24,8 +24,8 @@ export default function Dashboard() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const { data } = await res.json();
-      setTemplates(Array.isArray(data) ? data : []);
+      const tempdata = await res.json();
+      setTemplates(Array.isArray(tempdata) ? tempdata : []);
     };
 
     fetchTemplates();
