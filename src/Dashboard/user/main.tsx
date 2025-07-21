@@ -49,7 +49,7 @@ export default function Dashboard() {
   };
 
   const loadTemplate = (template: TemplateData) => {
-    navigate("/create", {
+    navigate("/user/create", {
       state: {
         loadSaved: true,
         template,
@@ -69,7 +69,7 @@ export default function Dashboard() {
         <div>
           <h2 className="text-2xl font-bold mb-8 text-purple-600">Dashboard</h2>
           <button
-            onClick={() => navigate("/profile")}
+            onClick={() => navigate("/user/profile")}
             className="w-full text-left py-2 px-3 rounded hover:bg-purple-100 text-gray-700"
           >
             Profile
@@ -88,7 +88,9 @@ export default function Dashboard() {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-semibold">Your Templates</h1>
           <button
-            onClick={() => navigate("/create", { state: { loadSaved: false } })}
+            onClick={() =>
+              navigate("/user/create", { state: { loadSaved: false } })
+            }
             className="bg-purple-600 text-white px-5 py-2 rounded hover:bg-purple-700"
           >
             + Create New

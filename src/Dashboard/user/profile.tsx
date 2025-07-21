@@ -13,7 +13,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:8080/profile", {
+      const res = await fetch("http://localhost:8080/user/profile", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -39,7 +39,7 @@ export default function Profile() {
 
   const handleUpdate = async () => {
     const token = localStorage.getItem("token");
-    const res = await fetch("http://localhost:8080/profile", {
+    const res = await fetch("http://localhost:8080/user/profile", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

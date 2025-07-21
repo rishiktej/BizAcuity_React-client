@@ -36,7 +36,7 @@ export default function SignInForm() {
           }
           localStorage.setItem("token", data.token);
           alert("Signin successful!");
-          navigate("/dashboard");
+          navigate("/user/dashboard");
           resetForm();
         } catch (error: any) {
           alert(`Error: ${error.message}`);
@@ -82,7 +82,7 @@ export default function SignInForm() {
           <button
             type="button"
             className="text-sm text-purple-600 hover:underline"
-            onClick={() => navigate("/forgotpassword")}
+            onClick={() => navigate("/user/forgotpassword")}
           >
             Forgot Password?
           </button>

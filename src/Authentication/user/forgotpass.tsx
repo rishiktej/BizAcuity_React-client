@@ -10,7 +10,7 @@ export default function ForgotPass() {
 
   const handleSendOtp = async () => {
     try {
-      const res = await fetch("http://localhost:8080/forgotpassword", {
+      const res = await fetch("http://localhost:8080/user/forgotpassword", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
