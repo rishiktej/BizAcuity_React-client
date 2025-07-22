@@ -11,6 +11,7 @@ import AdminDashboard from "../Dashboard/admin/main";
 import AdminUsersPage from "../Dashboard/admin/allusers";
 import UserHomePage from "../userHome";
 import HomePage from "../Home";
+import NewsletterSender from "../Dashboard/admin/newsletter";
 
 const App: React.FC = () => {
   return (
@@ -23,6 +24,7 @@ const App: React.FC = () => {
           <Route path="/admin/signin" element={<AdminSignInForm />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/userslist" element={<AdminUsersPage />} />
+          <Route path="/admin/send-newsletter" element={<NewsletterSender />} />
           <Route
             path="/user/create/"
             element={

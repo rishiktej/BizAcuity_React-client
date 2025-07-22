@@ -61,7 +61,7 @@ export default function AdminDashboard() {
   }, []);
 
   const handleSignOut = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("admintoken");
     navigate("/admin/signin");
   };
 
@@ -89,6 +89,14 @@ export default function AdminDashboard() {
                 className="text-blue-500"
               >
                 Users
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => navigate("/admin/send-newsletter")}
+                className="text-blue-500"
+              >
+                Send News-Letter
               </button>
             </li>
           </ul>

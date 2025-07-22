@@ -36,7 +36,7 @@ export default function SignUpForm() {
 
           alert("Signup successful!");
           resetForm();
-          navigate("/dashboard");
+          navigate("/user/dashboard");
         } catch (error: any) {
           alert(`Error: ${error.message}`);
         } finally {
