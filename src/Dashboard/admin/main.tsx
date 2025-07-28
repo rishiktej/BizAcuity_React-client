@@ -1,29 +1,20 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalTemplates, setTotalTemplates] = useState(0);
-  const [usageData, setUsageData] = useState([
-    { day: "Mon", usage: 10 },
-    { day: "Tue", usage: 22 },
-    { day: "Wed", usage: 15 },
-    { day: "Thu", usage: 30 },
-    { day: "Fri", usage: 18 },
-    { day: "Sat", usage: 24 },
-    { day: "Sun", usage: 12 },
-  ]);
+  // const [usageData, setUsageData] = useState([
+  //   { day: "Mon", usage: 10 },
+  //   { day: "Tue", usage: 22 },
+  //   { day: "Wed", usage: 15 },
+  //   { day: "Thu", usage: 30 },
+  //   { day: "Fri", usage: 18 },
+  //   { day: "Sat", usage: 24 },
+  //   { day: "Sun", usage: 12 },
+  // ]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,7 +114,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Usage Chart */}
-        <div className="bg-white shadow-md rounded-lg p-4">
+        {/* <div className="bg-white shadow-md rounded-lg p-4">
           <h2 className="text-lg font-semibold mb-4">App Usage (Weekly)</h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={usageData}>
@@ -134,7 +125,7 @@ export default function AdminDashboard() {
               <Bar dataKey="usage" fill="#6366F1" />
             </BarChart>
           </ResponsiveContainer>
-        </div>
+        </div> */}
       </div>
     </div>
   );
