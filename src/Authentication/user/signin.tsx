@@ -18,7 +18,7 @@ export default function SignInForm() {
       validationSchema={validationSchema}
       onSubmit={async (values, { resetForm, setSubmitting }) => {
         try {
-          const response = await fetch("http://localhost:8080/signin", {
+          const response = await fetch("http://34.227.75.19:8000/signin", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

@@ -26,7 +26,7 @@ export default function ForgotPass() {
 
   const handleVerifyOtp = async () => {
     try {
-      const res = await fetch("http://localhost:8080/verify-otp", {
+      const res = await fetch("http://34.227.75.19:8000/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp }),

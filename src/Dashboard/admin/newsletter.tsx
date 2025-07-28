@@ -15,7 +15,7 @@ export default function NewsletterSender() {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/admin/send-newsletter",
+        "http://34.227.75.19:8000/admin/send-newsletter",
         {
           method: "POST",
           headers: {

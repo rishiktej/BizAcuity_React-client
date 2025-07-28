@@ -28,7 +28,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:8080/admin/userscount", {
+        const res = await fetch("http://34.227.75.19:8000/admin/userscount", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("admintoken")}`,
           },
@@ -43,11 +43,14 @@ export default function AdminDashboard() {
 
     const fetchtemplateData = async () => {
       try {
-        const res = await fetch("http://localhost:8080/admin/templatescount", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("admintoken")}`,
-          },
-        });
+        const res = await fetch(
+          "http://34.227.75.19:8000/admin/templatescount",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("admintoken")}`,
+            },
+          }
+        );
         const data = await res.json();
         console.log(data);
         setTotalTemplates(data);
