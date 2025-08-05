@@ -19,7 +19,7 @@ export default function AdminSignInForm() {
           onSubmit={async (values, { setSubmitting }) => {
             try {
               const response = await fetch(
-                "http://34.227.75.19:8000/admin/signin",
+                "http://54.226.6.254:8000/admin/signin",
                 {
                   method: "POST",
                   headers: {

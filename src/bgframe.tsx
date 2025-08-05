@@ -96,7 +96,7 @@ const Bgframe: React.FC = () => {
 
     const toBase64FromURL = async (url: string): Promise<string> => {
       try {
-        const proxyUrl = `http://34.227.75.19:8000/proxy-image?url=${encodeURIComponent(
+        const proxyUrl = `http://54.226.6.254:8000/proxy-image?url=${encodeURIComponent(
           url
         )}`;
         const response = await fetch(proxyUrl);
@@ -177,8 +177,8 @@ const Bgframe: React.FC = () => {
     };
 
     const url = loadSaved
-      ? `http://34.227.75.19:8000/templates/${template._id}`
-      : "http://34.227.75.19:8000/templates";
+      ? `http://54.226.6.254:8000/templates/${template._id}`
+      : "http://54.226.6.254:8000/templates";
 
     const method = loadSaved ? "PUT" : "POST";
 

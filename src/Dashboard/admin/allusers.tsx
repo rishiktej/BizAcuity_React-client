@@ -18,7 +18,7 @@ export default function AdminUsersPage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://34.227.75.19:8000/admin/users/list", {
+        const res = await fetch("http://54.226.6.254:8000/admin/users/list", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("admintoken")}`,
           },

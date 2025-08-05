@@ -20,7 +20,7 @@ export default function AdminSignUpForm() {
           onSubmit={async (values, { resetForm, setSubmitting }) => {
             try {
               const response = await fetch(
-                "http://34.227.75.19:8000/admin/signup",
+                "http://54.226.6.254:8000/admin/signup",
                 {
                   method: "POST",
                   headers: {

@@ -21,7 +21,7 @@ export default function Dashboard() {
     const substatus = async () => {
       const token = localStorage.getItem("token");
       try {
-        const r = await fetch("http://34.227.75.19:8000/subscribe", {
+        const r = await fetch("http://54.226.6.254:8000/subscribe", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -41,7 +41,7 @@ export default function Dashboard() {
     const fetchTemplates = async () => {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://34.227.75.19:8000/templates", {
+      const res = await fetch("http://54.226.6.254:8000/templates", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -55,7 +55,7 @@ export default function Dashboard() {
   const deleteTemplate = async (id: string) => {
     const token = localStorage.getItem("token");
 
-    const res = await fetch(`http://34.227.75.19:8000/templates/${id}`, {
+    const res = await fetch(`http://54.226.6.254:8000/templates/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ export default function Dashboard() {
     const token = localStorage.getItem("token");
     setSubscribed(true);
     try {
-      const resp = await fetch("http://34.227.75.19:8000/subscribe", {
+      const resp = await fetch("http://54.226.6.254:8000/subscribe", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
