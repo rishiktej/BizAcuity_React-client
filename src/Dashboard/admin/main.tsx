@@ -7,7 +7,7 @@ export default function AdminDashboard() {
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalTemplates, setTotalTemplates] = useState(0);
   const API_BASE_URL =
-    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
   // const [usageData, setUsageData] = useState([
   //   { day: "Mon", usage: 10 },
   //   { day: "Tue", usage: 22 },

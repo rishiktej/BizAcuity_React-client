@@ -9,7 +9,7 @@ export default function AdminSignUpForm() {
     password: Yup.string().min(6, "Too short").required("Required"),
   });
   const API_BASE_URL =
-    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
   const navigate = useNavigate();
 

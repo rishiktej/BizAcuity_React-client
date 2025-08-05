@@ -34,7 +34,7 @@ const Bgframe: React.FC = () => {
   const loadSaved = location.state?.loadSaved ?? false;
   const template = location.state?.template ?? null;
   const API_BASE_URL =
-    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
   const convertToPixels = (value: number, unit: string): number => {
     if (unit === "cm") return value * 0.6;

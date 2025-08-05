@@ -8,7 +8,7 @@ export default function ForgotPass() {
   const [newPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
   const API_BASE_URL =
-    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
   const handleSendOtp = async () => {
     try {

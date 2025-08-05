@@ -5,7 +5,7 @@ export default function NewsletterSender() {
   const [content, setContent] = useState("");
   const [status, setStatus] = useState("");
   const API_BASE_URL =
-    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
   const handleSend = async () => {
     if (!subject || !content) {

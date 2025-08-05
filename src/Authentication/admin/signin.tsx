@@ -10,7 +10,7 @@ export default function AdminSignInForm() {
 
   const navigate = useNavigate();
   const API_BASE_URL =
-    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
+    import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-orange-100 via-orange-300 to-orange-500">
