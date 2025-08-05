@@ -14,11 +14,13 @@ export default function AdminUsersPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const API_BASE_URL =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://54.226.6.254:8000/admin/users/list", {
+        const res = await fetch(`${API_BASE_URL}/admin/users/list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("admintoken")}`,
           },

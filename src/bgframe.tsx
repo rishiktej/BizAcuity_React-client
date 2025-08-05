@@ -33,6 +33,8 @@ const Bgframe: React.FC = () => {
   const location = useLocation();
   const loadSaved = location.state?.loadSaved ?? false;
   const template = location.state?.template ?? null;
+  const API_BASE_URL =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
 
   const convertToPixels = (value: number, unit: string): number => {
     if (unit === "cm") return value * 0.6;
@@ -96,7 +98,7 @@ const Bgframe: React.FC = () => {
 
     const toBase64FromURL = async (url: string): Promise<string> => {
       try {
-        const proxyUrl = `http://54.226.6.254:8000/proxy-image?url=${encodeURIComponent(
+        const proxyUrl = `${API_BASE_URL}/proxy-image?url=${encodeURIComponent(
           url
         )}`;
         const response = await fetch(proxyUrl);
@@ -177,8 +179,8 @@ const Bgframe: React.FC = () => {
     };
 
     const url = loadSaved
-      ? `http://54.226.6.254:8000/templates/${template._id}`
-      : "http://54.226.6.254:8000/templates";
+      ? `${API_BASE_URL}/templates/${template._id}`
+      : `${API_BASE_URL}/templates`;
 
     const method = loadSaved ? "PUT" : "POST";
 

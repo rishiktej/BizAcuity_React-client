@@ -16,12 +16,14 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [templates, setTemplates] = useState<TemplateData[]>([]);
   const [subscribed, setSubscribed] = useState(false);
+  const API_BASE_URL =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
 
   useEffect(() => {
     const substatus = async () => {
       const token = localStorage.getItem("token");
       try {
-        const r = await fetch("http://54.226.6.254:8000/subscribe", {
+        const r = await fetch(`${API_BASE_URL}/subscribe`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -41,7 +43,7 @@ export default function Dashboard() {
     const fetchTemplates = async () => {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://54.226.6.254:8000/templates", {
+      const res = await fetch(`${API_BASE_URL}/templates`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -55,7 +57,7 @@ export default function Dashboard() {
   const deleteTemplate = async (id: string) => {
     const token = localStorage.getItem("token");
 
-    const res = await fetch(`http://54.226.6.254:8000/templates/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/templates/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -87,7 +89,7 @@ export default function Dashboard() {
     const token = localStorage.getItem("token");
     setSubscribed(true);
     try {
-      const resp = await fetch("http://54.226.6.254:8000/subscribe", {
+      const resp = await fetch(`${API_BASE_URL}/subscribe`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

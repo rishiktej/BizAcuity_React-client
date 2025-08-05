@@ -8,6 +8,8 @@ export default function AdminSignUpForm() {
     email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string().min(6, "Too short").required("Required"),
   });
+  const API_BASE_URL =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
 
   const navigate = useNavigate();
 
@@ -19,16 +21,13 @@ export default function AdminSignUpForm() {
           validationSchema={validationSchema}
           onSubmit={async (values, { resetForm, setSubmitting }) => {
             try {
-              const response = await fetch(
-                "http://54.226.6.254:8000/admin/signup",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(values),
-                }
-              );
+              const response = await fetch(`${API_BASE_URL}/admin/signup`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values),
+              });
 
               const data = await response.json();
 

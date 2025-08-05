@@ -4,6 +4,8 @@ export default function NewsletterSender() {
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
   const [status, setStatus] = useState("");
+  const API_BASE_URL =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
 
   const handleSend = async () => {
     if (!subject || !content) {
@@ -14,18 +16,15 @@ export default function NewsletterSender() {
     setStatus("Sending...");
 
     try {
-      const response = await fetch(
-        "http://54.226.6.254:8000/admin/send-newsletter",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("admintoken")}`,
-          },
+      const response = await fetch(`${API_BASE_URL}/admin/send-newsletter`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("admintoken")}`,
+        },
 
-          body: JSON.stringify({ subject, content }),
-        }
-      );
+        body: JSON.stringify({ subject, content }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to send newsletter");

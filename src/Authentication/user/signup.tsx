@@ -9,6 +9,8 @@ export default function SignUpForm() {
     password: Yup.string().min(6, "Too short").required("Required"),
   });
   const navigate = useNavigate();
+  const API_BASE_URL =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
 
   return (
     <Formik
@@ -16,7 +18,7 @@ export default function SignUpForm() {
       validationSchema={validationSchema}
       onSubmit={async (values, { resetForm, setSubmitting }) => {
         try {
-          const response = await fetch("http://54.226.6.254:8000/signup", {
+          const response = await fetch(`${API_BASE_URL}/signup`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

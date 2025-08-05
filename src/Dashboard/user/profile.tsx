@@ -9,11 +9,13 @@ export default function Profile() {
     password: "",
   });
   const [editMode, setEditMode] = useState(false);
+  const API_BASE_URL =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
 
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://54.226.6.254:8000/user/profile", {
+      const res = await fetch(`${API_BASE_URL}/user/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -39,7 +41,7 @@ export default function Profile() {
 
   const handleUpdate = async () => {
     const token = localStorage.getItem("token");
-    const res = await fetch("http://54.226.6.254:8000/user/profile", {
+    const res = await fetch(`${API_BASE_URL}/user/profile`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

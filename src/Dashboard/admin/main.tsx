@@ -6,6 +6,8 @@ export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalTemplates, setTotalTemplates] = useState(0);
+  const API_BASE_URL =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
   // const [usageData, setUsageData] = useState([
   //   { day: "Mon", usage: 10 },
   //   { day: "Tue", usage: 22 },
@@ -19,7 +21,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://54.166.206.192:8000/admin/userscount", {
+        const res = await fetch(`${API_BASE_URL}/admin/userscount`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("admintoken")}`,
           },
@@ -34,14 +36,11 @@ export default function AdminDashboard() {
 
     const fetchtemplateData = async () => {
       try {
-        const res = await fetch(
-          "http://54.226.6.254:8000/admin/templatescount",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("admintoken")}`,
-            },
-          }
-        );
+        const res = await fetch(`${API_BASE_URL}/admin/templatescount`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("admintoken")}`,
+          },
+        });
         const data = await res.json();
         console.log(data);
         setTotalTemplates(data);

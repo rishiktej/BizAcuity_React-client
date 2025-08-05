@@ -9,6 +9,8 @@ export default function AdminSignInForm() {
   });
 
   const navigate = useNavigate();
+  const API_BASE_URL =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-orange-100 via-orange-300 to-orange-500">
@@ -18,16 +20,13 @@ export default function AdminSignInForm() {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting }) => {
             try {
-              const response = await fetch(
-                "http://54.226.6.254:8000/admin/signin",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(values),
-                }
-              );
+              const response = await fetch(`${API_BASE_URL}/admin/signin`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(values),
+              });
 
               const data = await response.json();
               console.log("data:", data);

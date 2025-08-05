@@ -7,10 +7,12 @@ export default function ForgotPass() {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
+  const API_BASE_URL =
+    process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
 
   const handleSendOtp = async () => {
     try {
-      const res = await fetch("http://localhost:8080/user/forgotpassword", {
+      const res = await fetch(`${API_BASE_URL}/user/forgotpassword`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -26,7 +28,7 @@ export default function ForgotPass() {
 
   const handleVerifyOtp = async () => {
     try {
-      const res = await fetch("http://34.227.75.19:8000/verify-otp", {
+      const res = await fetch(`${API_BASE_URL}/verify-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp }),
@@ -41,7 +43,7 @@ export default function ForgotPass() {
 
   const handleResetPassword = async () => {
     try {
-      const res = await fetch("http://localhost:8080/reset-password", {
+      const res = await fetch(`${API_BASE_URL}/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp, newPassword }),
